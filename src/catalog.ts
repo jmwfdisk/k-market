@@ -92,4 +92,4 @@ export const products: Product[] = [
   },
 ];
 export const photo = (p: Product) => p.imageUrl || `./products/${p.id}.jpg`;
-export const money = (n: number) => `S$${(n / 100).toFixed(2)}`;
+export const money = (n: number) => `US$${(n / 100).toFixed(2)}`;

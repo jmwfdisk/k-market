@@ -26,7 +26,7 @@ export default function Store({ catalog }: { catalog: Product[] }) {
           <div>
             <a href="#about">컬렉션 안내</a>
             <span>
-              <Globe2 size={13} /> Thailand · SGD
+              <Globe2 size={13} /> Thailand · USD
             </span>
           </div>
         </div>

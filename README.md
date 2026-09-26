@@ -8,7 +8,7 @@ Node.js 22.13 이상에서 `npm ci`, `npm run dev`를 실행합니다.
 `npm run build`는 TypeScript 검사 후 `dist/`에 정적 파일을 생성합니다.
 `npm run preview`로 결과를 확인합니다.
 
-- `src/catalog.ts`: 상품명, 소개, 예시 가격(SGD 센트 정수).
+- `src/catalog.ts`: 상품명, 소개, 예시 가격(USD 센트 정수).
 - `src/store.tsx`: 검색, 카테고리, 메인 화면.
 - `src/main.tsx`: 상품 상세 화면 및 해시 경로.
 - `src/style.css`: 반응형 스타일.
