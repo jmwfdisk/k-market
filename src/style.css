@@ -1290,6 +1290,8 @@ label {
 
 .preview-note { margin: 18px 0; padding: 14px 18px; background: #f0f5fc; color: #425570; border-radius: 6px; font-size: 13px; line-height: 1.7; }
 .static-detail { padding-top: 32px; padding-bottom: 64px; }
+/* Route focus announces the heading without drawing an input-like border. */
+.static-detail h1[tabindex="-1"]:focus { outline: none; }
 .static-detail > a { display: inline-block; margin-bottom: 28px; }
 .static-detail .detail-info { padding: 32px; }
 .static-detail .detail-info p { margin: 18px 0; line-height: 1.8; }

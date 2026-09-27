@@ -50,7 +50,7 @@ function App() {
         <p>{product.description}</p>
         <p>구성 · {product.options.join(', ')}</p>
         <p className="preview-note">상품과 가격은 시연용입니다. 실제 구매·배송은 제공하지 않으며 아래에서 테스트 주문서를 확인할 수 있습니다.</p>
-        <a className="checkout-primary checkout-entry" href={`#checkout/${product.id}`}>토스 테스트 주문서 보기</a>
+        <a className="checkout-primary checkout-entry" href={`#checkout/${product.id}`}>Toss 테스트 주문서 보기</a>
         <a className="hero-link" href="#collection">다른 상품 둘러보기 →</a>
       </div>
     </div> : <div className="empty"><h1 tabIndex={-1}>상품을 찾을 수 없습니다</h1><p>컬렉션에서 다른 상품을 확인해주세요.</p></div>}
