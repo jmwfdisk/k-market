@@ -31,7 +31,6 @@ function App() {
   };
   return <SiteLayout filters={filters} onChange={setFilters} onSearch={showResults}>
     {!detail ? <Store catalog={products} filters={filters} setFilters={setFilters} /> : <main className="wrap static-detail">
-    <a href="#collection">← 컬렉션으로 돌아가기</a>
     {product ? <div className="detail-grid">
       <img className="detail-photo" src={photo(product)} alt={product.name} />
       <div className="detail-info">
