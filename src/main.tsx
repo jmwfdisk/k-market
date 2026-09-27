@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Store from './store';
-import Logo from './logo';
+import SiteLayout from './site-layout';
+import type { SearchFilters } from './catalog-search';
 import { products, photo, money } from './catalog';
 import './style.css';
 
 function App() {
   const [hash, setHash] = useState(location.hash);
+  const [filters, setFilters] = useState<SearchFilters>({ query: '', category: '전체', min: null, max: null, sort: 'featured' });
   useEffect(() => {
     const change = () => setHash(location.hash);
     addEventListener('hashchange', change);
@@ -23,9 +25,12 @@ function App() {
       document.getElementById(hash.slice(1))?.scrollIntoView();
     }
   }, [hash, product, detail]);
-  if (!detail) return <Store catalog={products} />;
-  return <main className="wrap static-detail">
-    <div className="detail-brand"><Logo /></div>
+  const showResults = () => {
+    if (location.hash !== '#collection') location.hash = 'collection';
+    else document.getElementById('collection')?.scrollIntoView({ behavior: 'smooth' });
+  };
+  return <SiteLayout filters={filters} onChange={setFilters} onSearch={showResults}>
+    {!detail ? <Store catalog={products} filters={filters} setFilters={setFilters} /> : <main className="wrap static-detail">
     <a href="#collection">← 컬렉션으로 돌아가기</a>
     {product ? <div className="detail-grid">
       <img className="detail-photo" src={photo(product)} alt={product.name} />
@@ -40,6 +45,7 @@ function App() {
         <a className="hero-link" href="#collection">다른 상품 둘러보기 →</a>
       </div>
     </div> : <div className="empty"><h1 tabIndex={-1}>상품을 찾을 수 없습니다</h1><p>컬렉션에서 다른 상품을 확인해주세요.</p></div>}
-  </main>;
+  </main>}
+  </SiteLayout>;
 }
 createRoot(document.getElementById('root')!).render(<App />);

@@ -1,50 +1,23 @@
-import ShopHeader from './shop-header';
-import { categories, searchCatalog, type SearchFilters } from './catalog-search';
-import Logo from './logo';
-import { useState } from 'react';
+import { searchCatalog, type SearchFilters } from './catalog-search';
 import {
   Search,
   ArrowUpRight,
   ArrowRight,
-  Menu,
-  Globe2,
   PackageCheck,
   Truck,
   ShieldCheck,
 } from 'lucide-react';
 import { products, photo, money, type Product } from './catalog';
-export default function Store({ catalog }: { catalog: Product[] }) {
-  const [filters, setFilters] = useState<SearchFilters>({ query: '', category: '전체', min: null, max: null, sort: 'featured' });
+export default function Store({ catalog, filters, setFilters }: {
+  catalog: Product[];
+  filters: SearchFilters;
+  setFilters: (filters: SearchFilters) => void;
+}) {
   const { query, category } = filters;
-  const setCategory = (next: string) => setFilters((current) => ({ ...current, category: next }));
+  const setCategory = (next: string) => setFilters({ ...filters, category: next });
   const filtered = searchCatalog(catalog, filters);
-  const showResults = () => document.getElementById('collection')?.scrollIntoView({ behavior: 'smooth' });
   return (
     <>
-      <div className="utility">
-        <div className="wrap">
-          <span>한국의 좋은 일상, 더 가까이.</span>
-          <div>
-            <a href="#about">컬렉션 안내</a>
-            <span>
-              <Globe2 size={13} /> Thailand · USD
-            </span>
-          </div>
-        </div>
-      </div>
-      <ShopHeader filters={filters} onChange={setFilters} onSearch={showResults} />
-      <nav className="nav wrap" aria-label="상품 카테고리">
-        {categories.map((n, i) => (
-          <button
-            className={category === n ? 'active' : ''}
-            onClick={() => setCategory(n)}
-            key={n}
-          >
-            {i === 0 && <Menu size={18} />} {n === '전체' ? '전체 카테고리' : n}
-          </button>
-        ))}
-        <span className="nav-note">CURATED IN KOREA</span>
-      </nav>
       <main className="wrap">
         <p className="preview-note">K-MARKET 미리보기 · 상품 소개 사이트입니다. 주문 및 결제는 지원하지 않습니다.</p>
         <section className="hero">
@@ -176,20 +149,7 @@ export default function Store({ catalog }: { catalog: Product[] }) {
           <img src={photo(products[2])} alt="화이트 세라믹 머그" />
         </section>
       </main>
-      <footer>
-        <div className="wrap">
-          <Logo />
-          <p>한국의 좋은 상품을 세계의 일상으로.</p>
-          <div className="footer-links" id="about">
-            <a href="#collection">전체 컬렉션</a>
-          </div>
-          <div className="footnote">
-            오픈 준비 중 · 상품과 가격은 시연용입니다. 현재는 상품 소개만 제공하며 주문·결제는 받지 않습니다.
-            <br />
-            Illustrative photography : Unsplash · © 2026 K-MARKET
-          </div>
-        </div>
-      </footer>
+
     </>
   );
 }
