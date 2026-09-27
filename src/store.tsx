@@ -33,7 +33,7 @@ export default function Store({ catalog }: { catalog: Product[] }) {
       </div>
       <header className="wrap main-header">
         <a className="logo" href="./">
-          K<span>MARKET</span>
+          K-<span>MARKET</span>
           <i />
         </a>
         <form className="search" onSubmit={(e) => e.preventDefault()}>
@@ -196,7 +196,7 @@ export default function Store({ catalog }: { catalog: Product[] }) {
       <footer>
         <div className="wrap">
           <a href="./" className="logo">
-            K<span>MARKET</span>
+            K-<span>MARKET</span>
             <i />
           </a>
           <p>한국의 좋은 상품을 세계의 일상으로.</p>
