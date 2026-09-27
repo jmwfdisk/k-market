@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "k-market-test-checkout",
+  "main": "cloudflare/worker.mjs",
+  "compatibility_date": "2026-09-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "CHECKOUT_SITE_URL": "https://jmwfdisk.github.io/k-market/",
+    "TOSS_TEST_CURRENCY": "KRW",
+    "TOSS_PAYMENT_VARIANT_KEY": "DEFAULT",
+    "TOSS_AGREEMENT_VARIANT_KEY": "AGREEMENT"
+  },
+  "durable_objects": { "bindings": [{ "name": "CHECKOUT_STORE", "class_name": "CheckoutStore" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["CheckoutStore"] }]
+}

@@ -24,7 +24,7 @@ GitHub Pages의 Source를 GitHub Actions로 설정합니다. `main`에 push하�
 ## 토스페이먼츠 테스트 연동
 
 설정과 검증 범위는 [테스트 결제 안내](docs/toss-test-checkout.md)를 참고하세요.
-GitHub Pages는 화면만 배포합니다. `server/`의 승인 API는 Pages에서 실행되지 않으며 별도의 Node.js 실행 환경과 영구 저장 공간이 필요합니다. Cloudflare는 사용하지 않습니다.
+GitHub Pages는 화면만 배포합니다. 공개 승인 API는 Cloudflare Worker와 SQLite Durable Object로 배포할 수 있습니다. [Cloudflare 배포 안내](docs/cloudflare-checkout.md)를 참고하세요. 기존 Node.js/SQLite 서버는 로컬 테스트에 사용합니다.
 
 로컬 `.env.server`에 결제위젯 테스트 키를 입력한 뒤 `npm run toss:check`, `npm run toss:dev`를 실행하면 화면과 승인 서버를 함께 실행합니다. API 키 없는 주문 체험은 제거했으며, 실제 토스 테스트 인증에는 테스트 키가 필요합니다.
 
