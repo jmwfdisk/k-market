@@ -1290,6 +1290,11 @@ label {
 
 .preview-note { margin: 18px 0; padding: 14px 18px; background: #f0f5fc; color: #425570; border-radius: 6px; font-size: 13px; line-height: 1.7; }
 .static-detail { padding-top: 32px; padding-bottom: 64px; }
+.checkout-order-number { margin: 16px 0; color: #64748b; font-size: 14px; }
+.checkout-order-number summary { cursor: pointer; width: fit-content; }
+.checkout-order-number summary:focus-visible { outline: 2px solid #155ad8; outline-offset: 4px; }
+.checkout-order-number p { font-size: 12px; overflow-wrap: anywhere; }
+.checkout-order-number span { user-select: all; }
 /* Route focus announces the heading without drawing an input-like border. */
 .static-detail h1[tabindex="-1"]:focus { outline: none; }
 .static-detail > a { display: inline-block; margin-bottom: 28px; }

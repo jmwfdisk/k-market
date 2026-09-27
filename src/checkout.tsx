@@ -7,6 +7,15 @@ function TestNotice() {
   return <p className="checkout-notice">테스트 결제 전용입니다. 실제 금액이 청구되지 않으며 상품 주문·배송은 이루어지지 않습니다.</p>;
 }
 
+function OrderNumber({ id }: { id: string }) {
+  const suffix = id.replace(/^km_/, '').replace(/-/g, '').slice(-12).toUpperCase();
+  const label = `KM-${suffix.slice(0, 6)}-${suffix.slice(6)}`;
+  return <details className="checkout-order-number">
+    <summary>주문번호 {label}</summary>
+    <p>전체 주문번호 <span>{id}</span></p>
+  </details>;
+}
+
 function PaymentWidget({ saved, config }: { saved: SavedOrder; config: CheckoutConfig }) {
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
@@ -69,7 +78,7 @@ function PaymentWidget({ saved, config }: { saved: SavedOrder; config: CheckoutC
   }
   return <div className="checkout-card">
     <h2>토스페이먼츠 테스트 결제</h2>
-    <p className="checkout-muted">주문번호 {saved.order.orderId}</p>
+    <OrderNumber id={saved.order.orderId} />
     <div id="toss-payment-methods" />
     <div id="toss-agreement" />
     {error && <p role="alert" className="checkout-error">{error}</p>}
@@ -165,7 +174,7 @@ export function PaymentResult() {
       {failed && <p>{callback?.code === 'PAY_PROCESS_CANCELED' ? '결제창에서 결제를 취소했습니다.' : '결제가 취소되었거나 결제 요청에 실패했습니다.'} 완료된 결제는 아닙니다.</p>}
       {!callback && <p>확인할 결제 결과가 없습니다.</p>}
       {error && <><p className="checkout-error" role="alert">{error}</p><p>새로 결제하지 말고 기존 주문의 결제 상태를 다시 확인해 주세요.</p><button className="checkout-primary" disabled={busy} onClick={() => setAttempt((value) => value + 1)}>결제 상태 다시 확인</button></>}
-      {order?.status === 'PAID' && <><h2>{order.productName}</h2><p>{order.option} · {order.quantity}개</p><strong>{paymentAmount(order)}</strong><p className="checkout-muted">주문번호 {order.orderId}</p><p>토스 승인 결과를 서버에서 확인했습니다. 실제 주문이나 배송은 진행되지 않습니다.</p></>}
+      {order?.status === 'PAID' && <><h2>{order.productName}</h2><p>{order.option} · {order.quantity}개</p><strong>{paymentAmount(order)}</strong><OrderNumber id={order.orderId} /><p>토스 승인 결과를 서버에서 확인했습니다. 실제 주문이나 배송은 진행되지 않습니다.</p></>}
       <a href="#test-orders">테스트 주문 내역 보기 →</a>
     </section>
   </main>;
@@ -191,7 +200,7 @@ export function TestOrders() {
     {orders.length === 0 ? <div className="checkout-card"><p>토스 테스트 결제 주문은 아직 없습니다.</p><a href="#collection">상품 둘러보기 →</a></div> : orders.map(({ order }) => <article key={order.orderId} className="checkout-card">
       <h2>{order.productName}</h2><p>{order.option} · {order.quantity}개 · {paymentAmount(order)}</p>
       <p>마지막 확인 상태: {order.status === 'PAID' ? '테스트 결제 완료' : order.status === 'PENDING' ? '테스트 결제 대기' : '결제 확인 필요'}</p>
-      <p className="checkout-muted">{order.orderId}</p>
+      <OrderNumber id={order.orderId} />
       {getPaymentReturn()?.orderId === order.orderId && order.status !== 'PAID' && <a href="#payment-result">결제 결과 다시 확인 →</a>}
     </article>)}
   </main>;
