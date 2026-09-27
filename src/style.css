@@ -95,6 +95,7 @@ button:disabled {
 }
 .logo span {
   font-weight: 500;
+  white-space: pre;
 }
 .logo i {
   width: 7px;
