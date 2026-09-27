@@ -1,3 +1,4 @@
+import Logo from './logo';
 import { useState } from 'react';
 import {
   Search,
@@ -32,10 +33,7 @@ export default function Store({ catalog }: { catalog: Product[] }) {
         </div>
       </div>
       <header className="wrap main-header">
-        <a className="logo" href="./">
-          K-<span> Market</span>
-          <i />
-        </a>
+        <Logo />
         <form className="search" onSubmit={(e) => e.preventDefault()}>
           <input
             aria-label="상품 검색"
@@ -195,10 +193,7 @@ export default function Store({ catalog }: { catalog: Product[] }) {
       </main>
       <footer>
         <div className="wrap">
-          <a href="./" className="logo">
-            K-<span> Market</span>
-            <i />
-          </a>
+          <Logo />
           <p>한국의 좋은 상품을 세계의 일상으로.</p>
           <div className="footer-links" id="about">
             <a href="#collection">전체 컬렉션</a>

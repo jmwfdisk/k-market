@@ -11,6 +11,7 @@ Node.js 22.13 이상에서 `npm ci`, `npm run dev`를 실행합니다.
 - `src/catalog.ts`: 상품명, 소개, 예시 가격(USD 센트 정수).
 - `src/store.tsx`: 검색, 카테고리, 메인 화면.
 - `src/main.tsx`: 상품 상세 화면 및 해시 경로.
+- `src/logo.tsx`, `public/logo.png`: 공통 이미지 로고(상단·하단·상세, 브라우저 아이콘).
 - `src/style.css`: 반응형 스타일.
 - `public/products/`: 상품 이미지.
 

@@ -86,25 +86,17 @@ button:disabled {
   padding: 29px 0;
 }
 .logo {
-  font-size: 32px;
-  letter-spacing: -1.6px;
-  font-weight: 800;
-  white-space: nowrap;
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
+  width: 220px;
 }
-.logo span {
-  font-weight: 500;
-  white-space: pre;
+.logo img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
-.logo i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #155ad8;
-  align-self: flex-end;
-  margin: 0 0 9px 4px;
-}
+.detail-brand { margin-bottom: 20px; }
 .search {
   border: 2px solid #155ad8;
   border-radius: 7px;
@@ -405,8 +397,7 @@ footer {
   color: #5f6c78;
 }
 footer .logo {
-  font-size: 24px;
-  color: #22313d;
+  width: 180px;
 }
 footer p {
   font-size: 14px;
@@ -477,7 +468,7 @@ footer p {
     flex-wrap: wrap;
   }
   .logo {
-    font-size: 26px;
+    width: 170px;
   }
   .search {
     order: 3;

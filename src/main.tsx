@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Store from './store';
+import Logo from './logo';
 import { products, photo, money } from './catalog';
 import './style.css';
 
@@ -24,6 +25,7 @@ function App() {
   }, [hash, product, detail]);
   if (!detail) return <Store catalog={products} />;
   return <main className="wrap static-detail">
+    <div className="detail-brand"><Logo /></div>
     <a href="#collection">← 컬렉션으로 돌아가기</a>
     {product ? <div className="detail-grid">
       <img className="detail-photo" src={photo(product)} alt={product.name} />
