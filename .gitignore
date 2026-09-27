@@ -1,5 +1,11 @@
 node_modules/
 dist/
 .env*
+!.env.example
+!.env.server.example
+server/data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
 .DS_Store
 *.tsbuildinfo

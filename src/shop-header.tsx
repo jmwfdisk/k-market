@@ -48,6 +48,7 @@ export default function ShopHeader({ filters, onChange, onSearch }: {
   return <>
     <header className="wrap shop-header">
       <div className="shop-top-actions">
+        <a className="test-orders-link" href="#test-orders">테스트 주문</a>
         <button className="pill-login" onClick={() => open('login')}><LogIn size={19} /> 로그인</button>
         <details className="customer-dropdown" ref={customer} onKeyDown={(e) => { if (e.key === 'Escape') { e.currentTarget.open = false; e.currentTarget.querySelector('summary')?.focus(); } }}>
           <summary>고객센터 <ChevronDown size={18} /></summary>
@@ -105,7 +106,7 @@ export default function ShopHeader({ filters, onChange, onSearch }: {
           </div><small>이용 방법을 안내하는 도우미입니다. 실시간 상담은 제공하지 않습니다.</small>
         </> : <>
           <details open><summary>상품은 어떻게 찾나요?</summary><p>검색창에서 카테고리를 선택하고 상품명을 입력하세요. 돋보기나 Enter를 누르면 결과로 이동합니다. 상세검색에서는 가격 범위와 정렬을 지정할 수 있습니다.</p></details>
-          <details><summary>주문이나 배송 신청이 가능한가요?</summary><p>현재는 상품 소개만 제공하며 주문·결제·배송 견적은 받지 않습니다. 실제 구매 기능은 아직 준비 중입니다.</p></details>
+          <details><summary>주문이나 배송 신청이 가능한가요?</summary><p>실제 구매·배송은 아직 제공하지 않습니다. 상품 상세에서 토스 테스트 주문서를 볼 수 있으며, 테스트 키와 서버 연결이 완료되면 실제 청구 없는 결제 시험이 가능합니다.</p></details>
           <details><summary>가격과 판매 대상 국가는 무엇인가요?</summary><p>태국을 대상으로 소개하며 가격은 미국 달러(USD)로 표시합니다. 상품과 가격은 시연용이며 확정 판매가가 아닙니다.</p></details>
           <details><summary>계정이나 개인정보가 필요한가요?</summary><p>로그인 없이 검색과 상세 소개를 이용할 수 있습니다. 이 사이트에서 비밀번호나 배송지를 입력받지 않습니다.</p></details>
         </>}
