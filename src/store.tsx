@@ -1,3 +1,5 @@
+import ShopHeader from './shop-header';
+import { categories, searchCatalog, type SearchFilters } from './catalog-search';
 import Logo from './logo';
 import { useState } from 'react';
 import {
@@ -12,13 +14,11 @@ import {
 } from 'lucide-react';
 import { products, photo, money, type Product } from './catalog';
 export default function Store({ catalog }: { catalog: Product[] }) {
-  const [query, setQuery] = useState('');
-  const [category, setCategory] = useState('전체');
-  const filtered = catalog.filter(
-    (p) =>
-      (category === '전체' || p.category === category) &&
-      (p.name + ' ' + p.en).toLowerCase().includes(query.toLowerCase()),
-  );
+  const [filters, setFilters] = useState<SearchFilters>({ query: '', category: '전체', min: null, max: null, sort: 'featured' });
+  const { query, category } = filters;
+  const setCategory = (next: string) => setFilters((current) => ({ ...current, category: next }));
+  const filtered = searchCatalog(catalog, filters);
+  const showResults = () => document.getElementById('collection')?.scrollIntoView({ behavior: 'smooth' });
   return (
     <>
       <div className="utility">
@@ -32,23 +32,9 @@ export default function Store({ catalog }: { catalog: Product[] }) {
           </div>
         </div>
       </div>
-      <header className="wrap main-header">
-        <Logo />
-        <form className="search" onSubmit={(e) => e.preventDefault()}>
-          <input
-            aria-label="상품 검색"
-            placeholder="어떤 한국 상품을 찾으세요?"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <button aria-label="검색">
-            <Search size={22} />
-          </button>
-        </form>
-        <div className="header-actions"><a href="#collection">상품 둘러보기 <ArrowUpRight /></a></div>
-      </header>
+      <ShopHeader filters={filters} onChange={setFilters} onSearch={showResults} />
       <nav className="nav wrap" aria-label="상품 카테고리">
-        {['전체', '패션', '뷰티', '리빙', '문구', '디지털'].map((n, i) => (
+        {categories.map((n, i) => (
           <button
             className={category === n ? 'active' : ''}
             onClick={() => setCategory(n)}
@@ -116,7 +102,7 @@ export default function Store({ catalog }: { catalog: Product[] }) {
                     : category + ' 셀렉션'}
               </h2>
             </div>
-            <span>{filtered.length}개의 상품</span>
+            <span role="status" aria-live="polite">{filtered.length}개의 상품</span>
           </div>
           <div className="products">
             {filtered.map((p) => (
@@ -160,8 +146,7 @@ export default function Store({ catalog }: { catalog: Product[] }) {
               <p>다른 검색어 또는 카테고리를 선택해 주세요.</p>
               <button
                 onClick={() => {
-                  setQuery('');
-                  setCategory('전체');
+                  setFilters({ query: '', category: '전체', min: null, max: null, sort: 'featured' });
                 }}
               >
                 전체 상품 보기

@@ -6,7 +6,7 @@
 
 Node.js 22.13 이상에서 `npm ci`, `npm run dev`를 실행합니다.
 `npm run build`는 TypeScript 검사 후 `dist/`에 정적 파일을 생성합니다.
-`npm run preview`로 결과를 확인합니다.
+`npm run preview`로 결과를 확인합니다. `npm test`로 복합 검색·가격 범위·정렬 검증을 실행합니다.
 
 - `src/catalog.ts`: 상품명, 소개, 예시 가격(USD 센트 정수).
 - `src/store.tsx`: 검색, 카테고리, 메인 화면.
@@ -32,3 +32,11 @@ Illustrative photography, Unsplash License: https://unsplash.com/license
 - Skincare: Victoria Priessnitz https://unsplash.com/photos/XuRiyB55ZGk
 - Headphones: VCOM https://unsplash.com/photos/C0k_JxvcilU
 - Vase: Sixteen Miles Out https://unsplash.com/photos/aFvxASlms2A
+
+## 검색 및 이용 안내
+
+- `src/shop-header.tsx`: 카테고리 통합 검색창, 로그인 안내, 고객센터 드롭다운, 상세검색 및 쇼핑몰 도우미.
+- `src/catalog-search.ts`: 상품명/영문명·카테고리·USD 가격 범위 필터 및 정렬.
+- `tests/search.test.mjs`: 복합 필터, 가격 입력 오류와 0 처리, 초기화 및 정렬 검사.
+- 로그인은 기능 준비 안내이며 인증이나 개인정보 입력을 제공하지 않습니다. 도우미는 이용 안내로 실시간 상담이나 AI 채팅이 아닙니다.
+- 헤더 배치는 사용자가 제공한 나라장터 쇼핑몰 화면을 참고했습니다. 해당 기관과의 제휴를 의미하지 않습니다.
