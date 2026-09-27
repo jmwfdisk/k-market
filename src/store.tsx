@@ -186,7 +186,7 @@ export default function Store({ catalog }: { catalog: Product[] }) {
           <div className="footnote">
             오픈 준비 중 · 상품과 가격은 시연용입니다. 현재는 상품 소개만 제공하며 주문·결제는 받지 않습니다.
             <br />
-            Illustrative photography: Unsplash · © 2026 K-MARKET
+            Illustrative photography : Unsplash · © 2026 K-MARKET
           </div>
         </div>
       </footer>
