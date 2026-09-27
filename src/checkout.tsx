@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { loadTossPayments, ANONYMOUS, type TossPaymentsWidgets, type WidgetPaymentMethodWidget, type WidgetAgreementWidget } from '@tosspayments/tosspayments-sdk';
 import { type Product, money, photo } from './catalog';
-import { createDemoOrder, demoOrders, type DemoOrder } from './demo-orders';
 import { checkoutApi, getConfig, getPaymentReturn, newOrderAccess, paymentAmount, saveOrder, savedOrders, type CheckoutConfig, type SavedOrder, type TestOrder } from './checkout-api';
 
 function TestNotice() {
@@ -88,8 +87,6 @@ export function Checkout({ product }: { product: Product | undefined }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState<SavedOrder | null>(null);
-  const [demo, setDemo] = useState<DemoOrder | null>(null);
-  const demoLock = useRef(false);
   const access = useRef<ReturnType<typeof newOrderAccess> | null>(null);
   useEffect(() => {
     let active = true;
@@ -99,13 +96,6 @@ export function Checkout({ product }: { product: Product | undefined }) {
   if (!product) return <main className="wrap checkout-page"><h1>상품을 찾을 수 없습니다</h1><a href="#collection">상품 보기</a></main>;
   const testAmount = { currency: config?.currency || 'KRW', amount: config?.currency === 'USD' ? product.price * quantity / 100 : (config?.krwTestUnitAmount || 1000) * quantity };
   const update = () => { access.current = null; };
-  function experience() {
-    if (!product || !consent || busy || demoLock.current) return;
-    demoLock.current = true;
-    setError('');
-    try { setDemo(createDemoOrder(product, option, quantity)); }
-    catch { demoLock.current = false; setError('체험 주문을 저장하지 못했습니다. 브라우저 저장소 사용을 허용한 후 다시 시도해 주세요.'); }
-  }
   async function prepare() {
     if (!product || !config?.enabled || !consent || busy || saved) return;
     setBusy(true); setError('');
@@ -127,29 +117,19 @@ export function Checkout({ product }: { product: Product | undefined }) {
     <div className="checkout-grid">
       <section className="checkout-card">
         <div className="checkout-product"><img src={photo(product)} alt={product.name} /><div><h2>{product.name}</h2><p>상품 소개 가격 {money(product.price)}</p></div></div>
-        <label>옵션<select value={option} disabled={Boolean(saved || demo) || busy} onChange={(event) => { setOption(event.target.value); update(); }}>{product.options.map((name) => <option key={name}>{name}</option>)}</select></label>
-        <label>수량<select value={quantity} disabled={Boolean(saved || demo) || busy} onChange={(event) => { setQuantity(Number(event.target.value)); update(); }}>{Array.from({ length: 10 }, (_, index) => <option key={index + 1} value={index + 1}>{index + 1}개</option>)}</select></label>
+        <label>옵션<select value={option} disabled={Boolean(saved) || busy} onChange={(event) => { setOption(event.target.value); update(); }}>{product.options.map((name) => <option key={name}>{name}</option>)}</select></label>
+        <label>수량<select value={quantity} disabled={Boolean(saved) || busy} onChange={(event) => { setQuantity(Number(event.target.value)); update(); }}>{Array.from({ length: 10 }, (_, index) => <option key={index + 1} value={index + 1}>{index + 1}개</option>)}</select></label>
         <div className="checkout-total"><span>테스트 결제 금액</span><strong>{paymentAmount(saved?.order || testAmount)}</strong></div>
         {(config?.currency || 'KRW') === 'KRW' && <p className="checkout-muted">연동 시험을 위한 별도 금액(상품 1개당 1,000원)입니다. 위 USD 상품 가격을 환산한 금액이 아닙니다.</p>}
         <p className="checkout-muted">배송비·세금·재고 예약을 포함하지 않는 결제 기능 테스트입니다. 배송지와 개인정보를 입력하지 않습니다.</p>
         <a href={`#product/${product.id}`}>상품 상세 보기</a>
       </section>
-      {demo ? <section className="checkout-card" aria-live="polite">
-        <h2>주문 체험 완료</h2>
-        <p>결제 없이 주문 흐름을 체험했습니다. 실제 주문 접수·결제 승인·배송은 이루어지지 않습니다.</p>
-        <h3>{demo.productName}</h3><p>{demo.option} · {demo.quantity}개</p>
-        <div className="checkout-total"><span>체험 상품 합계 (USD)</span><strong>{money(demo.amountCents)}</strong></div>
-        <p className="checkout-muted">체험번호 {demo.id}</p>
-        <a href="#test-orders">체험 주문 내역 보기 →</a>
-        <button className="checkout-secondary" onClick={() => { setDemo(null); demoLock.current = false; setConsent(false); }}>다시 체험하기</button>
-      </section> : saved && config ? <PaymentWidget saved={saved} config={config} /> : <section className="checkout-card">
+      {saved && config ? <PaymentWidget saved={saved} config={config} /> : <section className="checkout-card">
         <h2>테스트 결제 준비</h2>
         {!config && !error && <p role="status">연결 상태 확인 중…</p>}
         {config && !config.enabled && <div className="checkout-setup" role="status"><strong>테스트 결제 연결 준비 중</strong><p>현재 결제창을 사용할 수 없습니다. 토스페이먼츠 테스트 키와 결제 서버 연결이 완료되면 테스트할 수 있습니다.</p></div>}
         <label className="checkout-consent"><input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} disabled={busy} /><span>실제 구매·배송이 없는 테스트 주문임을 확인했습니다.</span></label>
         {error && <p className="checkout-error" role="alert">{error}</p>}
-        <div className="checkout-setup"><strong>결제 없이 주문 체험</strong><p>선택한 옵션·수량으로 체험 주문을 만들어 보세요. API 키 없이 이용할 수 있으며 이 탭에만 저장됩니다.</p><p>체험 상품 합계: {money(product.price * quantity)} (배송비·세금 제외)</p></div>
-        <button className="checkout-primary" disabled={!consent || busy} onClick={experience}>결제 없이 주문 체험하기</button>
         <button className="checkout-primary" disabled={!config?.enabled || !consent || busy} onClick={() => void prepare()}>{busy ? '주문 확인 중…' : '테스트 주문 생성 및 결제 준비'}</button>
       </section>}
     </div>
@@ -193,7 +173,6 @@ export function PaymentResult() {
 
 export function TestOrders() {
   const [orders, setOrders] = useState(savedOrders);
-  const [demos] = useState(demoOrders);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   async function refresh() {
@@ -207,10 +186,6 @@ export function TestOrders() {
   }
   return <main className="wrap checkout-page"><h1>테스트 주문 내역</h1><TestNotice />
     <p className="checkout-muted">이 탭에서 만든 최근 테스트 주문만 표시합니다. 탭을 닫거나 브라우저 저장소를 지우면 조회 정보가 사라집니다.</p>
-    {demos.length > 0 && <section><h2>결제 없는 체험 주문</h2><p>브라우저에만 저장된 체험 내역입니다. 주문 접수나 결제 승인 기록이 아닙니다.</p>{demos.map((demo) => <article className="checkout-card" key={demo.id}>
-      <h3>{demo.productName}</h3><p>{demo.option} · {demo.quantity}개 · 상품 합계 {money(demo.amountCents)}</p>
-      <p>주문 체험 완료 · 결제 없음</p><p className="checkout-muted">{demo.id}</p>
-    </article>)}</section>}
     {orders.length > 0 && <button className="checkout-secondary" disabled={busy} onClick={() => void refresh()}>{busy ? '조회 중…' : '서버 상태 새로고침'}</button>}
     {error && <p className="checkout-error" role="alert">{error}</p>}
     {orders.length === 0 ? <div className="checkout-card"><p>토스 테스트 결제 주문은 아직 없습니다.</p><a href="#collection">상품 둘러보기 →</a></div> : orders.map(({ order }) => <article key={order.orderId} className="checkout-card">
